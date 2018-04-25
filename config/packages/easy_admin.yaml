@@ -1,0 +1,24 @@
+easy_admin:
+  entities:
+    # List the entity class name you want to manage
+    Post:
+      class: App\Entity\Post
+      form:
+        fields: ['name', 'content', 'enable', 'category', { property: 'imageFile', type: 'vich_image' }]
+      list:
+        fields:
+          - 'name'
+          - 'enable'
+          - 'category'
+          - { property: 'image', type: 'image', base_path: '%app.path.post_images%' }
+      show:
+        fields:
+          - 'name'
+          - 'content'
+          - 'enable'
+          - 'category'
+          - { property: 'image', type: 'image', base_path: '%app.path.post_images%' }
+    Category:
+      class: App\Entity\Category
+      form:
+        fields: ['name','slug','enable','posts']
