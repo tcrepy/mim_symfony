@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <div class="example-wrapper">
-        <a href="{{ path('security_login')}}"> Connexion</a>
         <div>
             {% for post in posts %}
                 {{ post.name }}
