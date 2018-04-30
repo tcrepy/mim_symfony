@@ -1,10 +1,12 @@
 <?php
-
+// /src/Entity/User.php
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -27,6 +29,7 @@ class User implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(type="string")
+     * @Assert\NotBlank()
      */
     private $fullName;
 
@@ -34,6 +37,7 @@ class User implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(type="string", unique=true)
+     * @Assert\NotBlank()
      */
     private $username;
 
@@ -41,13 +45,15 @@ class User implements UserInterface, \Serializable
      * @var string
      *
      * @ORM\Column(type="string", unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $email;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=64)
      */
     private $password;
 
@@ -68,12 +74,13 @@ class User implements UserInterface, \Serializable
         $this->fullName = $fullName;
     }
 
-    public function getFullName(): string
+    // le ? signifie que cela peur aussi retourner null
+    public function getFullName(): ?string
     {
         return $this->fullName;
     }
 
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
@@ -83,7 +90,7 @@ class User implements UserInterface, \Serializable
         $this->username = $username;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
@@ -93,7 +100,7 @@ class User implements UserInterface, \Serializable
         $this->email = $email;
     }
 
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -110,7 +117,7 @@ class User implements UserInterface, \Serializable
     {
         $roles = $this->roles;
 
-// Afin d'être sûr qu'un user a toujours au moins 1 rôle
+        // Afin d'être sûr qu'un user a toujours au moins 1 rôle
         if (empty($roles)) {
             $roles[] = 'ROLE_USER';
         }
@@ -130,9 +137,9 @@ class User implements UserInterface, \Serializable
      */
     public function getSalt(): ?string
     {
-// See "Do you need to use a Salt?" at https://symfony.com/doc/current/cookbook/security/entity_provider.html
-// we're using bcrypt in security.yml to encode the password, so
-// the salt value is built-in and you don't have to generate one
+        // See "Do you need to use a Salt?" at https://symfony.com/doc/current/cookbook/security/entity_provider.html
+        // we're using bcrypt in security.yml to encode the password, so
+        // the salt value is built-in and you don't have to generate one
 
         return null;
     }
@@ -144,9 +151,9 @@ class User implements UserInterface, \Serializable
      */
     public function eraseCredentials(): void
     {
-// Nous n'avons pas besoin de cette methode car nous n'utilions pas de plainPassword
-// Mais elle est obligatoire car comprise dans l'interface UserInterface
-// $this->plainPassword = null;
+        // Nous n'avons pas besoin de cette methode car nous n'utilions pas de plainPassword
+        // Mais elle est obligatoire car comprise dans l'interface UserInterface
+        // $this->plainPassword = null;
     }
 
     /**
