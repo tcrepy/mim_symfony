@@ -35,7 +35,7 @@ security:
                 # La route où se trouve le process de deconnexion
                 path: security_logout
                 # La route sur laquelle doit etre rediriger l'utilisateur apres une deconnexion
-                target: index
+                target: homepage
 
     access_control:
         # Les regles de securité

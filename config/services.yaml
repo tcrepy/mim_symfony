@@ -3,6 +3,7 @@
 parameters:
     locale: 'en'
     app.path.post_images: /images/posts
+    app.notifications.email_sender: contact@tanguycrepy.fr
 
 services:
     # default configuration for services in *this* file
@@ -27,3 +28,6 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\EventSubscriber\RegistrationNotifySubscriber:
+        # le nom de la variable que l'on utilisera dans le service
+        $sender: '%app.notifications.email_sender%'
