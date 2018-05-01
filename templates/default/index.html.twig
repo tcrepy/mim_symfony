@@ -1,4 +1,6 @@
 {% extends 'base.html.twig' %}
+
+
 {% block body %}
     <div class="example-wrapper">
         <div>
@@ -8,4 +10,9 @@
             {% endfor %}
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="{{ asset('js/vote.js') }}"></script>
 {% endblock %}
