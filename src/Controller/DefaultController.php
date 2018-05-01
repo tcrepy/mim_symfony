@@ -21,6 +21,14 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/presentation", name="presentation")
+     */
+    public function presentation()
+    {
+        return $this->render('default/presentation.html.twig');
+    }
+
+    /**
      * @param Post $post
      * @Route("/vote/{id}", name="vote")
      */
