@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\File;
@@ -64,6 +66,21 @@ class Post
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="post")
+     */
+    private $Users;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
+     */
+    private $nbVote;
+
+    public function __construct()
+    {
+        $this->Users = new ArrayCollection();
+    }
 
     public function setImageFile(File $image = null)
     {
@@ -171,5 +188,48 @@ class Post
     public function onPrePersist()
     {
         $this->createdAt = new \DateTime("now");
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->Users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->Users->contains($user)) {
+            $this->Users[] = $user;
+            $user->setPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->Users->contains($user)) {
+            $this->Users->removeElement($user);
+            // set the owning side to null (unless already changed)
+            if ($user->getPost() === $this) {
+                $user->setPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getNbVote(): ?int
+    {
+        return $this->nbVote;
+    }
+
+    public function setNbVote(int $nbVote): self
+    {
+        $this->nbVote = $nbVote;
+
+        return $this;
     }
 }

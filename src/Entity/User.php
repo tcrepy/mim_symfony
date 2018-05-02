@@ -64,6 +64,11 @@ class User implements UserInterface, \Serializable
      */
     private $roles = [];
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Post", inversedBy="Users")
+     */
+    private $post;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -170,5 +175,17 @@ class User implements UserInterface, \Serializable
     public function unserialize($serialized): void
     {
         [$this->id, $this->username, $this->password] = unserialize($serialized, ['allowed_classes' => false]);
+    }
+
+    public function getPost(): ?Post
+    {
+        return $this->post;
+    }
+
+    public function setPost(?Post $post): self
+    {
+        $this->post = $post;
+
+        return $this;
     }
 }

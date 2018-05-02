@@ -5,8 +5,16 @@
     <div class="example-wrapper">
         <div>
             {% for post in posts %}
-                {{ post.name }}
-                <img src="{{ vich_uploader_asset(post, 'imageFile') }}" width="150px">
+                <div class="post" data-id="{{ post.id }}">
+                    <img src="{{ vich_uploader_asset(post, 'imageFile') }}" height="150px">
+                    <div class="bottom">
+                        <span class="name">{{ post.name }}</span>
+                        <div class="actions">
+                            <span class="look"><i class="fas fa-search-plus"></i></span>
+                            <span class="vote"><i class="fas fa-thumbs-up"></i></span>
+                        </div>
+                    </div>
+                </div>
             {% endfor %}
         </div>
     </div>

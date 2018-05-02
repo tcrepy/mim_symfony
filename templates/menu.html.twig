@@ -1,5 +1,6 @@
 <div class="container mb-4">
     <ul class="nav nav-tabs">
+        <li class="nav-item"><a href="{{ url('homepage') }}" class="nav-link">Acceuil</a></li>
         {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
             <li class="nav-item"><a class="nav-link" href="{{ url('admin') }}">Admin</a></li>
         {% endif %}
