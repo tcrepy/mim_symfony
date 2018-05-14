@@ -72,14 +72,20 @@ class Post
      */
     private $Users;
 
+//    /**
+//     * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
+//     */
+//    private $nbVote;
+
     /**
-     * @ORM\Column(type="integer", nullable=true, options={"default" : 0})
+     * @ORM\OneToMany(targetEntity="App\Entity\Vote", mappedBy="post")
      */
-    private $nbVote;
+    private $votes;
 
     public function __construct()
     {
         $this->Users = new ArrayCollection();
+        $this->votes = new ArrayCollection();
     }
 
     public function setImageFile(File $image = null)
@@ -182,7 +188,6 @@ class Post
 
     /**
      * Gets triggered only on insert
-
      * @ORM\PrePersist
      */
     public function onPrePersist()
@@ -221,15 +226,52 @@ class Post
         return $this;
     }
 
-    public function getNbVote(): ?int
+//    public function getNbVote(): ?int
+//    {
+//        return $this->nbVote;
+//    }
+//
+//    public function setNbVote(int $nbVote): self
+//    {
+//        $this->nbVote = $nbVote;
+//
+//        return $this;
+//    }
+
+    /**
+     * @return Collection|Vote[]
+     */
+    public function getVotes(): Collection
     {
-        return $this->nbVote;
+        return $this->votes;
     }
 
-    public function setNbVote(int $nbVote): self
+    public function addVote(Vote $vote): self
     {
-        $this->nbVote = $nbVote;
+        if (!$this->votes->contains($vote)) {
+            $this->votes[] = $vote;
+            $vote->setPost($this);
+        }
 
         return $this;
+    }
+
+    public function removeVote(Vote $vote): self
+    {
+        if ($this->votes->contains($vote)) {
+            $this->votes->removeElement($vote);
+            // set the owning side to null (unless already changed)
+            if ($vote->getPost() === $this) {
+                $vote->setPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getNbVote(): int
+    {
+        $nbVote = count($this->getVotes()->toArray());
+        return $nbVote;
     }
 }

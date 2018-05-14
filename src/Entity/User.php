@@ -2,6 +2,8 @@
 // /src/Entity/User.php
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -69,6 +71,16 @@ class User implements UserInterface, \Serializable
      */
     private $post;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Vote", mappedBy="user")
+     */
+    private $votes;
+
+    public function __construct()
+    {
+        $this->votes = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -79,7 +91,7 @@ class User implements UserInterface, \Serializable
         $this->fullName = $fullName;
     }
 
-    // le ? signifie que cela peur aussi retourner null
+    // le ? signifie que cela peut aussi retourner null
     public function getFullName(): ?string
     {
         return $this->fullName;
@@ -185,6 +197,37 @@ class User implements UserInterface, \Serializable
     public function setPost(?Post $post): self
     {
         $this->post = $post;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Vote[]
+     */
+    public function getVotes(): Collection
+    {
+        return $this->votes;
+    }
+
+    public function addVote(Vote $vote): self
+    {
+        if (!$this->votes->contains($vote)) {
+            $this->votes[] = $vote;
+            $vote->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVote(Vote $vote): self
+    {
+        if ($this->votes->contains($vote)) {
+            $this->votes->removeElement($vote);
+            // set the owning side to null (unless already changed)
+            if ($vote->getUser() === $this) {
+                $vote->setUser(null);
+            }
+        }
 
         return $this;
     }
