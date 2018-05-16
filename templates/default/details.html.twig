@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if app.request.get('_route') != app.request.headers.get('referer') %}
+        <a href="{{ app.request.headers.get('referer') }}">Retour</a>
+    {% endif %}
+    <h1>Détails</h1>
+
+    {% if post %}
+        <div class="container">
+            <div class="card-columns">
+                <div class="">
+                    <div class="card panel-default ">
+                        <div class="card-header">{{ post.name }}</div>
+                        <div class="card-body">
+                            {{ post.content }}
+                            <img src="{{ vich_uploader_asset(post, 'imageFile') }}" height="150px">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <h2>Aucun contenu</h2>
+    {% endif %}
+{% endblock %}

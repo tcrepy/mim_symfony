@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Category;
 use App\Entity\Post;
 use App\Service\Tools;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -23,17 +24,31 @@ class PostRepository extends ServiceEntityRepository
     /**
      * @throws \Doctrine\ORM\ORMException
      */
-    public function getTwoRandomElem()
+    public function getTwoRandomElem(Category $category = null)
     {
         //on recup le nombre de rows de la table
-        $totalRowsTable = $this->createQueryBuilder('a')->select('count(a.id)')->getQuery()->getSingleScalarResult();
-        $random_ids = Tools::UniqueRandomNumbersWithinRange(1,$totalRowsTable,2); //contient 2 id aléatoire entre 1 (id minimum de la table) et le nombre de row
-        return $this->createQueryBuilder('p')
+        $totalRowsTable = $this->createQueryBuilder('a')->select('count(a.id)');
+        if ($category !== null) {
+            $totalRowsTable = $totalRowsTable->where('a.category = :category')
+                ->setParameter('category', $category->getId());
+        }
+        $totalRowsTable = $totalRowsTable->getQuery()->getSingleScalarResult();
+        $random_ids = Tools::UniqueRandomNumbersWithinRange(1, $totalRowsTable, 2); //contient 2 id aléatoire entre 1 (id minimum de la table) et le nombre de row
+        $qb = $this->createQueryBuilder('p')
             ->where('p.id IN (:ids)')
             ->setParameter('ids', $random_ids)
-            ->setMaxResults(3)
-            ->getQuery()
+            ->setMaxResults(3);
+
+        return $qb->getQuery()
             ->getResult();
+    }
+
+    public function search($word)
+    {
+        $query = $this->createQueryBuilder('e')
+            ->where(' e.name LIKE :word or e.content LIKE :word')
+            ->setParameter('word', '%' . $word . '%');
+        return $query->getQuery()->getResult();
     }
 //    /**
 //     * @return Post[] Returns an array of Post objects

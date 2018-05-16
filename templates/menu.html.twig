@@ -1,18 +1,31 @@
 <div class="container mb-4">
-    <ul class="nav nav-tabs">
+    <ul class="nav justify-content-center">
         <li class="nav-item"><a href="{{ url('homepage') }}" class="nav-link">Acceuil</a></li>
-        {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
-            <li class="nav-item"><a class="nav-link" href="{{ url('admin') }}">Admin</a></li>
-        {% endif %}
-
         {% if app.user %}
-            <li class="nav-item"><a class="nav-link" href="{{ url('security_logout') }}">Déconnexion</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                   aria-expanded="false">{{ app.user.username }}</a>
+                <div class="dropdown-menu">
+                    {% if app.user and 'ROLE_ADMIN' in app.user.roles %}
+                        <a class="dropdown-item" href="{{ url('admin') }}">Admin</a>
+                        <div class="dropdown-divider"></div>
+                    {% endif %}
+                    <a class="dropdown-item disabled">Vos 5 derniers votes &nbsp;<i class="fa fa-arrow-down"></i></a>
+                    <div class="dropdown-divider"></div>
+                    {% for vote in lastUserVotes %}
+                        <a class="dropdown-item" href="{{ url('details', {'slug':vote.post.name}) }}">
+                            - {{ vote.post.name }}</a>
+                    {% endfor %}
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ url('security_logout') }}">Déconnexion</a>
+                </div>
+            </li>
         {% else %}
             <li class="nav-item"><a class="nav-link" href="{{ url('security_login') }}">Connexion</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url('user_registration') }}">Inscription</a></li>
         {% endif %}
         <li class="nav-item"><a class="nav-link" href="{{ url('presentation') }}">Présentation</a></li>
-        <li class="nav-item"><a class="nav-link" href="">Rechercher</a></li>
-        <li class="nav-item"><a class="nav-link" href="">Tops</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url('search') }}">Rechercher</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url('categoriesList') }}">Categories</a></li>
     </ul>
 </div>

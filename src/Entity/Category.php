@@ -49,7 +49,8 @@ class Category
         $this->posts = new ArrayCollection();
     }
 
-    public function __toString() {
+    public function __toString()
+    {
         return $this->name;
     }
 
@@ -139,11 +140,21 @@ class Category
 
     /**
      * Gets triggered only on insert
-
      * @ORM\PrePersist
      */
     public function onPrePersist()
     {
         $this->createdAt = new \DateTime("now");
+    }
+
+    public function getWinner()
+    {
+        $winner = null;
+        foreach ($this->getPosts() as $post) {
+            if (!is_object($winner) || count($post->getVotes()->toArray()) > count($winner->getVotes()->toArray())) {
+                $winner = $post;
+            }
+        }
+        return $winner;
     }
 }

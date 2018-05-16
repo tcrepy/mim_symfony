@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Page de recherche</h1>
+
+    {{ form(form) }}
+    {% if news %}
+        <div class="container">
+            <div class="card-columns">
+                {% for item in news %}
+                    <div class="">
+                        <div class="card panel-default ">
+                            <div class="card-header">{{ item.name }}</div>
+                            <div class="card-body">
+                                {{ item.content }}
+                                <img src="{{ vich_uploader_asset(item, 'imageFile') }}" height="150px">
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <h2>Aucun contenu</h2>
+    {% endif %}
+{% endblock %}

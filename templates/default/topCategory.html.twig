@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <h1>Top pour la catégorie {{ category.name }}</h1>
+    <div class="wrapper">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Date</th>
+                <th scope="col">Nombre de votes</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for post in posts %}
+                <tr>
+                    <td scope="row">{{ post.id }}</td>
+                    <td>{{ post.name }}</td>
+                    <td>{{ post.createdAt|date('d/m/Y') }}</td>
+                    <td>{{ post.getNbVote }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% for post in randomPosts %}
+        <div class="post" data-id="{{ post.id }}">
+            <img src="{{ vich_uploader_asset(post, 'imageFile') }}" height="150px">
+            <div class="bottom">
+                <span class="name">{{ post.name }}</span>
+                <span class="vote_number">{{ post.getNbVote }}</span>
+                <div class="actions">
+                    <span class="look"><a href="{{ url('details', {'slug': post.name}) }}"><i
+                                    class="fas fa-search-plus"></i></a></span>
+                    <span class="vote"><i class="fas fa-thumbs-up"></i></span>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/vote.js') }}"></script>
+{% endblock %}

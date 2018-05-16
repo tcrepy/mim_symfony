@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Vote;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -17,6 +18,25 @@ class VoteRepository extends ServiceEntityRepository
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, Vote::class);
+    }
+
+    public function getLastTenVote()
+    {
+        return $this->createQueryBuilder('v')
+            ->setMaxResults(10)
+            ->orderBy('v.date', 'desc')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getLastUserVote(User $user) {
+        return $this->createQueryBuilder('v')
+            ->where('v.user = :user')
+            ->setParameter('user', $user->getId())
+            ->setMaxResults(5)
+            ->orderBy('v.date', 'desc')
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**

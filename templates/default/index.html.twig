@@ -11,7 +11,7 @@
                         <span class="name">{{ post.name }}</span>
                         <span class="vote_number">{{ post.getNbVote }}</span>
                         <div class="actions">
-                            <span class="look"><i class="fas fa-search-plus"></i></span>
+                            <span class="look"><a href="{{ url('details', {'slug': post.name}) }}"><i class="fas fa-search-plus"></i></a></span>
                             <span class="vote"><i class="fas fa-thumbs-up"></i></span>
                         </div>
                     </div>
@@ -19,9 +19,32 @@
             {% endfor %}
         </div>
     </div>
+
+    <div class="wrapper">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Date</th>
+                <th scope="col">User</th>
+                <th scope="col">Post</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for vote in lastVotes %}
+                <tr>
+                    <td scope="row">{{ vote.id }}</td>
+                    <td>{{ vote.date|date('d/m/Y H:m:s') }}</td>
+                    <td>{{ vote.user.username }}</td>
+                    <td><a href="{{ url('details', {'slug':vote.post.name}) }}">{{ vote.post.name }}</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
-{{ parent() }}
-<script src="{{ asset('js/vote.js') }}"></script>
+    {{ parent() }}
+    <script src="{{ asset('js/vote.js') }}"></script>
 {% endblock %}

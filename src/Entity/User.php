@@ -231,4 +231,9 @@ class User implements UserInterface, \Serializable
 
         return $this;
     }
+
+    public function getLastVote()
+    {
+        return $this->getRepository(Vote::class)->getLastUserVote($this);
+    }
 }
