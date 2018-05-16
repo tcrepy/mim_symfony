@@ -26,20 +26,28 @@
         </table>
     </div>
 
-    {% for post in randomPosts %}
-        <div class="post" data-id="{{ post.id }}">
-            <img src="{{ vich_uploader_asset(post, 'imageFile') }}" height="150px">
-            <div class="bottom">
-                <span class="name">{{ post.name }}</span>
-                <span class="vote_number">{{ post.getNbVote }}</span>
-                <div class="actions">
-                    <span class="look"><a href="{{ url('details', {'slug': post.name}) }}"><i
-                                    class="fas fa-search-plus"></i></a></span>
-                    <span class="vote"><i class="fas fa-thumbs-up"></i></span>
+    <div class="container">
+        <div class="card-columns">
+            {% for post in randomPosts %}
+                <div class="post" data-id="{{ post.id }}">
+                    <div class="">
+                        <div class="card panel-default ">
+                            <div class="card-header">{{ post.name }} <div class="float-right">{{ post.getNbVote }} vote(s)</div> </div>
+                            <div class="card-body">
+                                {{ post.content }}
+                                <img src="{{ vich_uploader_asset(post, 'imageFile') }}" height="150px">
+                                <div class="actions">
+                                            <span class="look"><a href="{{ url('details', {'slug': post.name}) }}"><i
+                                                            class="fas fa-search-plus"></i></a></span>
+                                    <span class="vote"><i class="fas fa-thumbs-up"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            {% endfor %}
         </div>
-    {% endfor %}
+    </div>
 {% endblock %}
 
 {% block javascripts %}
