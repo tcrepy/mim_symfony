@@ -13,6 +13,10 @@ Setup
 lancez les lignes de commandes suivantes
  - ``composer update``
  - ``npm install``
+ - ``npm install --prefix ./public izitoast``
+ - ``php bin/console d:d:c``
+ - ``php bin/console d:s:u --force``
+ - ``php bin/console d:f:l``
 
 Pour lancer le serveur
 - ``php bin/console s:r``
