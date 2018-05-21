@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Vote;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -9,6 +10,16 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    protected function render(string $view, array $parameters = array(), Response $response = null): Response
+    {
+        $commonData = [];
+        if ($this->getUser()) {
+            $commonData = [
+                'lastUserVotes' => $this->getDoctrine()->getRepository(Vote::class)->getLastUserVote($this->getUser()),
+            ];
+        }
+        return parent::render($view, $parameters + $commonData, $response);
+    }
     /**
      * @Route("/login", name="security_login")
      */

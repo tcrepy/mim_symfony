@@ -2,7 +2,8 @@
 ======================
 
 Un projet réalisé dans le cadre de mes études en licence pro MIM
-lien du [tp](https://github.com/moshifr/sf_lp2018)
+
+[tp](https://github.com/moshifr/sf_lp2018)
 
 Setup
 ---

@@ -27,13 +27,14 @@ class PostRepository extends ServiceEntityRepository
     public function getTwoRandomElem(Category $category = null)
     {
         //on recup le nombre de rows de la table
-        $totalRowsTable = $this->createQueryBuilder('a')->select('count(a.id)');
+        $totalRowsTable = $this->createQueryBuilder('a')->select('a.id');
         if ($category !== null) {
             $totalRowsTable = $totalRowsTable->where('a.category = :category')
                 ->setParameter('category', $category->getId());
         }
-        $totalRowsTable = $totalRowsTable->getQuery()->getSingleScalarResult();
-        $random_ids = Tools::UniqueRandomNumbersWithinRange(1, $totalRowsTable, 2); //contient 2 id aléatoire entre 1 (id minimum de la table) et le nombre de row
+        $totalRowsTable = $totalRowsTable->getQuery()->getResult();
+
+        $random_ids = Tools::UniqueRandomElemFromTab($totalRowsTable, 2);
         $qb = $this->createQueryBuilder('p')
             ->where('p.id IN (:ids)')
             ->setParameter('ids', $random_ids)

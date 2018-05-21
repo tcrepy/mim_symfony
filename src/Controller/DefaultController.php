@@ -20,9 +20,12 @@ class DefaultController extends Controller
 {
     protected function render(string $view, array $parameters = array(), Response $response = null): Response
     {
-        $commonData = [
-            'lastUserVotes' => $this->getDoctrine()->getRepository(Vote::class)->getLastUserVote($this->getUser()),
-        ];
+        $commonData = [];
+        if ($this->getUser()) {
+            $commonData = [
+                'lastUserVotes' => $this->getDoctrine()->getRepository(Vote::class)->getLastUserVote($this->getUser()),
+            ];
+        }
         return parent::render($view, $parameters + $commonData, $response);
     }
 

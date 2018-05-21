@@ -10,12 +10,17 @@
                         <a class="dropdown-item" href="{{ url('admin') }}">Admin</a>
                         <div class="dropdown-divider"></div>
                     {% endif %}
-                    <a class="dropdown-item disabled">Vos 5 derniers votes &nbsp;<i class="fa fa-arrow-down"></i></a>
+                    <a class="dropdown-item disabled">Vos derniers votes &nbsp;<i class="fa fa-arrow-down"></i></a>
                     <div class="dropdown-divider"></div>
-                    {% for vote in lastUserVotes %}
-                        <a class="dropdown-item" href="{{ url('details', {'slug':vote.post.name}) }}">
-                            - {{ vote.post.name }}</a>
-                    {% endfor %}
+                    {% if lastUserVotes is not empty %}
+                        {% for vote in lastUserVotes %}
+                            <a class="dropdown-item" href="{{ url('details', {'slug':vote.post.name}) }}">
+                                - {{ vote.post.name }}</a>
+                        {% endfor %}
+                    {% else %}
+                        <a class="dropdown-item disabled">Il n'y a aucun vote</a>
+                    {% endif %}
+
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{{ url('security_logout') }}">Déconnexion</a>
                 </div>

@@ -18,7 +18,7 @@ class Post
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", options={"default" : null})
      */
     private $id;
 
@@ -78,7 +78,7 @@ class Post
 //    private $nbVote;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Vote", mappedBy="post")
+     * @ORM\OneToMany(targetEntity="App\Entity\Vote", mappedBy="post", orphanRemoval=true)
      */
     private $votes;
 

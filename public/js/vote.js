@@ -15,6 +15,7 @@ function vote(elem) {
     $.post('/ajax/vote/'+id_post, {'id_post': id_post}, function(data) {
         if (data.etat === 'conf') {
             post.find('.vote_number').text(Number(nbVote) +1);
+            post.find('.nombreVotes').text(Number(nbVote)+1 + ' vote(s)');
             iziToast.success({
                 title: 'OK',
                 message: data.message,

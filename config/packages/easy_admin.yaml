@@ -5,10 +5,13 @@ easy_admin:
         children:
         - { label: 'Categories', entity: 'Category'}
         - { label: 'Posts', entity: 'Post'}
+        - { label: 'Votes', entity: 'Votes'}
       - label: 'Security'
         children:
         - { label: 'Users', entity: 'User'}
   entities:
+    Votes:
+      class: App\Entity\Vote
     User:
       class: App\Entity\User
       form:
