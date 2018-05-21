@@ -16,6 +16,8 @@ lancez les lignes de commandes suivantes
  - ``npm install --prefix ./public izitoast``
  - ``php bin/console d:d:c``
  - ``php bin/console d:s:u --force``
+ 
+ pour créer les utilisateurs 
  - ``php bin/console d:f:l``
 
 Pour lancer le serveur
